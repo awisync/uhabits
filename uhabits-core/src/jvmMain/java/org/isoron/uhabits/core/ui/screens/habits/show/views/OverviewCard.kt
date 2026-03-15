@@ -21,7 +21,6 @@ package org.isoron.uhabits.core.ui.screens.habits.show.views
 
 import org.isoron.uhabits.core.models.Entry
 import org.isoron.uhabits.core.models.Habit
-import org.isoron.uhabits.core.models.NumericalHabitType
 import org.isoron.uhabits.core.models.PaletteColor
 import org.isoron.uhabits.core.ui.views.Theme
 import org.isoron.uhabits.core.utils.DateUtils
@@ -53,7 +52,6 @@ class OverviewCardPresenter {
                 .count()
                 .toLong()
 
-            // Day % for numerical habits
             val dayPercentage = if (habit.isNumerical && habit.targetValue > 0) {
                 val todayEntry = habit.originalEntries[today]
                 val actualValue = maxOf(0, todayEntry.value).toDouble() / 1000.0
@@ -74,3 +72,4 @@ class OverviewCardPresenter {
             )
         }
     }
+}
