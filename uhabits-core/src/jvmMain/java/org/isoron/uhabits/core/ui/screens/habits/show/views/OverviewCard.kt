@@ -21,9 +21,11 @@ package org.isoron.uhabits.core.ui.screens.habits.show.views
 
 import org.isoron.uhabits.core.models.Entry
 import org.isoron.uhabits.core.models.Habit
+import org.isoron.uhabits.core.models.NumericalHabitType
 import org.isoron.uhabits.core.models.PaletteColor
 import org.isoron.uhabits.core.ui.views.Theme
 import org.isoron.uhabits.core.utils.DateUtils
+import kotlin.math.min
 
 data class OverviewCardState(
     val color: PaletteColor,
@@ -31,7 +33,9 @@ data class OverviewCardState(
     val scoreYearDiff: Float,
     val scoreToday: Float,
     val totalCount: Long,
-    val theme: Theme
+    val theme: Theme,
+    val isNumerical: Boolean = false,
+    val dayPercentage: Float = 0f,
 )
 
 class OverviewCardPresenter {
@@ -48,14 +52,25 @@ class OverviewCardPresenter {
                 .filter { it.value == Entry.YES_MANUAL }
                 .count()
                 .toLong()
+
+            // Day % for numerical habits
+            val dayPercentage = if (habit.isNumerical && habit.targetValue > 0) {
+                val todayEntry = habit.originalEntries[today]
+                val actualValue = maxOf(0, todayEntry.value).toDouble() / 1000.0
+                min(1.0, actualValue / habit.targetValue).toFloat()
+            } else {
+                0f
+            }
+
             return OverviewCardState(
                 color = habit.color,
                 scoreToday = scoreToday,
                 scoreMonthDiff = scoreToday - scoreLastMonth,
                 scoreYearDiff = scoreToday - scoreLastYear,
                 totalCount = totalCount,
-                theme = theme
+                theme = theme,
+                isNumerical = habit.isNumerical,
+                dayPercentage = dayPercentage,
             )
         }
     }
-}
