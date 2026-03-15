@@ -21,6 +21,7 @@ package org.isoron.uhabits.activities.habits.show.views
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.LinearLayout
 import org.isoron.platform.gui.toInt
 import org.isoron.uhabits.R
@@ -45,18 +46,45 @@ class OverviewCardView(context: Context, attrs: AttributeSet) : LinearLayout(con
         val androidColor = state.theme.color(state.color).toInt()
         val res = StyledResources(context)
         val inactiveColor = res.getColor(R.attr.contrast60)
-        binding.monthDiffLabel.setTextColor(if (state.scoreMonthDiff >= 0) androidColor else inactiveColor)
-        binding.monthDiffLabel.text = formatPercentageDiff(state.scoreMonthDiff)
-        binding.scoreLabel.setTextColor(androidColor)
-        binding.scoreLabel.text = String.format("%.0f%%", state.scoreToday * 100)
-        binding.scoreRing.setColor(androidColor)
-        binding.scoreRing.setPercentage(state.scoreToday)
 
-        binding.title.setTextColor(androidColor)
-        binding.totalCountLabel.setTextColor(androidColor)
-        binding.totalCountLabel.text = state.totalCount.toString()
-        binding.yearDiffLabel.setTextColor(if (state.scoreYearDiff >= 0) androidColor else inactiveColor)
-        binding.yearDiffLabel.text = formatPercentageDiff(state.scoreYearDiff)
+        if (state.isNumerical) {
+            // Measurable habit: Day % aur Overall % dikhao
+            binding.scoreLabel.setTextColor(androidColor)
+            binding.scoreLabel.text = String.format("%.0f%%", state.dayPercentage * 100)
+            binding.scoreRing.setColor(androidColor)
+            binding.scoreRing.setPercentage(state.dayPercentage)
+
+            // Score label ko "Day" karo
+            binding.scoreTitleLabel.text = "Day"
+
+            // Month diff ko Overall score se replace karo
+            binding.monthDiffLabel.setTextColor(androidColor)
+            binding.monthDiffLabel.text = String.format("%.0f%%", state.scoreToday * 100)
+            binding.monthDiffTitleLabel.text = "Overall"
+
+            // Year diff hide karo
+            binding.yearDiffContainer.visibility = View.GONE
+
+            // Total hide karo
+            binding.totalContainer.visibility = View.GONE
+        } else {
+            // Yes/No habit: original behavior
+            binding.monthDiffLabel.setTextColor(if (state.scoreMonthDiff >= 0) androidColor else inactiveColor)
+            binding.monthDiffLabel.text = formatPercentageDiff(state.scoreMonthDiff)
+            binding.scoreLabel.setTextColor(androidColor)
+            binding.scoreLabel.text = String.format("%.0f%%", state.scoreToday * 100)
+            binding.scoreRing.setColor(androidColor)
+            binding.scoreRing.setPercentage(state.scoreToday)
+            binding.totalCountLabel.setTextColor(androidColor)
+            binding.totalCountLabel.text = state.totalCount.toString()
+            binding.yearDiffLabel.setTextColor(if (state.scoreYearDiff >= 0) androidColor else inactiveColor)
+            binding.yearDiffLabel.text = formatPercentageDiff(state.scoreYearDiff)
+
+            binding.yearDiffContainer.visibility = View.VISIBLE
+            binding.totalContainer.visibility = View.VISIBLE
+            binding.scoreTitleLabel.text = resources.getString(R.string.score)
+            binding.monthDiffTitleLabel.text = resources.getString(R.string.month)
+        }
         postInvalidate()
     }
 }
