@@ -52,10 +52,15 @@ class OverviewCardPresenter {
                 .count()
                 .toLong()
 
-            val dayPercentage = if (habit.isNumerical && habit.targetValue > 0) {
-                val todayEntry = habit.originalEntries[today]
-                val actualValue = maxOf(0, todayEntry.value).toDouble() / 1000.0
-                min(1.0, actualValue / habit.targetValue).toFloat()
+            val dayPercentage = if (habit.isNumerical) {
+                val target = habit.targetValue
+                if (target > 0) {
+                    val todayEntry = habit.originalEntries.get(today)
+                    val actualValue = maxOf(0, todayEntry.value).toDouble() / 1000.0
+                    min(1.0, actualValue / target).toFloat()
+                } else {
+                    0f
+                }
             } else {
                 0f
             }
