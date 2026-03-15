@@ -82,9 +82,6 @@ class ScoreList {
         val values = computedEntries.getByInterval(from, to).map { it.value }.toIntArray()
         val isAtMost = numericalHabitType == NumericalHabitType.AT_MOST
 
-        // For non-daily boolean habits, we double the numerator and the denominator to smooth
-        // out irregular repetition schedules (for example, weekly habits performed on different
-        // days of the week)
         if (!isNumerical && freq < 1.0) {
             numerator *= 2
             denominator *= 2
@@ -130,7 +127,15 @@ class ScoreList {
                     }
                 }
                 if (values[offset] != Entry.SKIP) {
-                    val percentageCompleted = min(1.0, rollingSum / numerator)
+                    // CHANGE: partial credit - jo bhi karo uska proportional score mile
+                    // Pehle: sirf YES_MANUAL = 1.0, baaki = 0.0
+                    // Ab: actual/target ratio se score milega
+                    val actualValue = max(0, values[offset]).toDouble() / 1000.0
+                    val percentageCompleted = if (targetValue > 0) {
+                        min(1.0, actualValue / targetValue)
+                    } else {
+                        min(1.0, rollingSum / numerator)
+                    }
                     previousValue = compute(freq, previousValue, percentageCompleted)
                 }
             }
