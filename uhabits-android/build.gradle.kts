@@ -26,7 +26,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         // Sabse important line: Sirf English build hogi, baaki sab ignore.
-        resourceConfigurations += listOf("en")
+        resourceConfigurations += "en"
     }
 
     signingConfigs {
