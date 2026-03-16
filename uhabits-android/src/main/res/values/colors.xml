@@ -67,7 +67,7 @@
         <item>@color/grey_700</item>
         <item>@color/grey_800</item>
         <item>@color/grey_900</item>
-        <item>@color/grey_950</item>
+        <item>@color/grey_900</item>
     </array>
 
     <array name="darkPalette">
@@ -174,3 +174,14 @@
         <item>@color/black_aa</item>
     </array>
 </resources>
+```
+
+**Step 5** — Commit karo
+
+---
+
+**FILE 2 — `PaletteColor.kt`**
+
+**Step 6** — Jao:
+```
+github.com/awisync/uhabits/blob/dev/uhabits-core/src/commonMain/kotlin/org/isoron/uhabits/core/models/PaletteColor.kt
