@@ -57,19 +57,19 @@ data class PaletteColor(val paletteIndex: Int) {
             "#8E24AA", // 33 purple_600
             "#6A1B9A", // 34 purple_800
             "#4A148C", // 35 purple_900
-            "#6D4C41", // 36 brown_500
+            "#795548", // 36 brown_500
             "#5D4037", // 37 brown_700
             "#3E2723", // 38 brown_900
-            "#546E7A", // 39 blue_grey_500
-            "#455A64", // 40 blue_grey_600
-            "#37474F", // 41 blue_grey_700
-            "#263238", // 42 blue_grey_800
+            "#607D8B", // 39 blue_grey_500
+            "#546E7A", // 40 blue_grey_600
+            "#455A64", // 41 blue_grey_700
+            "#37474F", // 42 blue_grey_800
             "#9E9E9E", // 43 grey_500
             "#757575", // 44 grey_600
             "#616161", // 45 grey_700
             "#424242", // 46 grey_800
             "#212121", // 47 grey_900
-            "#101010"  // 48 grey_950
+            "#212121"  // 48 grey_900
         )[paletteIndex]
     }
 
