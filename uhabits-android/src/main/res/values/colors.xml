@@ -173,7 +173,4 @@
         <item>@color/black_aa</item>
         <item>@color/black_aa</item>
     </array>
-
-    <color name="ic_launcher_background">#1976D2</color>
-    <color name="color_background">@color/grey_200</color>
 </resources>
