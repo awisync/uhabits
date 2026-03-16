@@ -29,11 +29,11 @@ tasks.compileLint {
 }
 
 /*
-Added on top of kotlinOptions to work around this issue:
-https://youtrack.jetbrains.com/issue/KTIJ-24311/task-current-target-is-17-and-kaptGenerateStubsProductionDebugKotlin-task-current-target-is-1.8-jvm-target-compatibility-should#focus=Comments-27-6798448.0-0
-Updating gradle might fix this, so try again in the future to remove this and run:
-./gradlew --rerun-tasks :uhabits-android:kaptGenerateStubsReleaseKotlin
-If this doesn't produce any warning, try to remove it.
+ Added on top of kotlinOptions to work around this issue:
+ https://youtrack.jetbrains.com/issue/KTIJ-24311/task-current-target-is-17-and-kaptGenerateStubsProductionDebugKotlin-task-current-target-is-1.8-jvm-target-compatibility-should#focus=Comments-27-6798448.0-0
+ Updating gradle might fix this, so try again in the future to remove this and run:
+ ./gradlew --rerun-tasks :uhabits-android:kaptGenerateStubsReleaseKotlin
+ If this doesn't produce any warning, try to remove it.
  */
 kotlin {
     jvmToolchain(17)
@@ -50,6 +50,9 @@ android {
         targetSdk = 36
         applicationId = "org.isoron.uhabits"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // Sabse important line: Sirf English aur Hindi build hogi, baaki translation errors ignore ho jayenge.
+        resourceConfigurations += listOf("en", "hi")
     }
 
     signingConfigs {
@@ -84,6 +87,7 @@ android {
     }
 
     kotlinOptions.jvmTarget = JavaVersion.VERSION_17.toString()
+
     buildFeatures.viewBinding = true
     lint.abortOnError = false
 }
@@ -111,7 +115,6 @@ dependencies {
     implementation(libs.konfetti.xml)
     implementation(project(":uhabits-core"))
     ksp(libs.dagger.compiler)
-
     androidTestImplementation(libs.bundles.androidTest)
     testImplementation(libs.bundles.test)
 }
