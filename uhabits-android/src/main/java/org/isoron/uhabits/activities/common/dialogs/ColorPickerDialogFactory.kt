@@ -39,7 +39,7 @@ class ColorPickerDialogFactory @Inject constructor(@param:ActivityContext privat
             R.string.color_picker_default_title,
             res.getPalette(),
             androidColor,
-            4,
+            7,
             SIZE_SMALL
         )
         return dialog
