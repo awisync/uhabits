@@ -1,22 +1,3 @@
-/*
- * Copyright (C) 2016-2025 Álinson Santos Xavier <git@axavier.org>
- *
- * This file is part of Loop Habit Tracker.
- *
- * Loop Habit Tracker is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
- *
- * Loop Habit Tracker is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
- * more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program. If not, see <http://www.gnu.org/licenses/>.
- */
-
 plugins {
     alias(libs.plugins.agp)
     alias(libs.plugins.kotlin.android)
@@ -28,13 +9,6 @@ tasks.compileLint {
     dependsOn("updateTranslators")
 }
 
-/*
- Added on top of kotlinOptions to work around this issue:
- https://youtrack.jetbrains.com/issue/KTIJ-24311/task-current-target-is-17-and-kaptGenerateStubsProductionDebugKotlin-task-current-target-is-1.8-jvm-target-compatibility-should#focus=Comments-27-6798448.0-0
- Updating gradle might fix this, so try again in the future to remove this and run:
- ./gradlew --rerun-tasks :uhabits-android:kaptGenerateStubsReleaseKotlin
- If this doesn't produce any warning, try to remove it.
- */
 kotlin {
     jvmToolchain(17)
 }
@@ -51,8 +25,8 @@ android {
         applicationId = "org.isoron.uhabits"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        // Sabse important line: Sirf English aur Hindi build hogi, baaki translation errors ignore ho jayenge.
-        resourceConfigurations += listOf("en", "hi")
+        // Sabse important line: Sirf English build hogi, baaki sab ignore.
+        resourceConfigurations += listOf("en")
     }
 
     signingConfigs {
@@ -74,7 +48,6 @@ android {
                 signingConfig = signingConfigs.getByName("release")
             }
         }
-
         debug {
             enableUnitTestCoverage = true
         }
@@ -87,7 +60,6 @@ android {
     }
 
     kotlinOptions.jvmTarget = JavaVersion.VERSION_17.toString()
-
     buildFeatures.viewBinding = true
     lint.abortOnError = false
 }
