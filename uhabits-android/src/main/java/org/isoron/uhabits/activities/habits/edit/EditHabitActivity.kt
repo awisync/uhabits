@@ -107,10 +107,11 @@ class EditHabitActivity : AppCompatActivity() {
             freqNum = habit.frequency.numerator
             freqDen = habit.frequency.denominator
             targetType = habit.targetType
-            habit.reminder?.let {
-                reminderHour = it.hour
-                reminderMin = it.minute
-                reminderDays = it.days
+            val firstReminder = habit.reminders.firstOrNull()
+            if (firstReminder != null) {
+                reminderHour = firstReminder.hour
+                reminderMin = firstReminder.minute
+                reminderDays = firstReminder.days
             }
             binding.nameInput.setText(habit.name)
             binding.questionInput.setText(habit.question)
@@ -239,7 +240,6 @@ class EditHabitActivity : AppCompatActivity() {
 
         binding.reminderDatePicker.setOnClickListener {
             val dialog = WeekdayPickerDialog()
-
             dialog.setListener { days: WeekdayList ->
                 reminderDays = days
                 if (reminderDays.isEmpty) reminderDays = WeekdayList.EVERY_DAY
@@ -272,10 +272,9 @@ class EditHabitActivity : AppCompatActivity() {
         habit.question = binding.questionInput.text.trim().toString()
         habit.description = binding.notesInput.text.trim().toString()
         habit.color = color
+        habit.reminders.clear()
         if (reminderHour >= 0) {
-            habit.reminder = Reminder(reminderHour, reminderMin, reminderDays)
-        } else {
-            habit.reminder = null
+            habit.reminders.add(Reminder(reminderHour, reminderMin, reminderDays))
         }
 
         habit.frequency = Frequency(freqNum, freqDen)
