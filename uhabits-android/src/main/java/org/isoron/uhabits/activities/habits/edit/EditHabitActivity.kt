@@ -26,8 +26,12 @@ import android.os.Bundle
 import android.text.Html
 import android.text.Spanned
 import android.text.format.DateFormat
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.ImageButton
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -40,7 +44,6 @@ import org.isoron.uhabits.R
 import org.isoron.uhabits.activities.AndroidThemeSwitcher
 import org.isoron.uhabits.activities.common.dialogs.ColorPickerDialogFactory
 import org.isoron.uhabits.activities.common.dialogs.FrequencyPickerDialog
-import org.isoron.uhabits.activities.common.dialogs.WeekdayPickerDialog
 import org.isoron.uhabits.core.commands.CommandRunner
 import org.isoron.uhabits.core.commands.CreateHabitCommand
 import org.isoron.uhabits.core.commands.EditHabitCommand
@@ -81,10 +84,9 @@ class EditHabitActivity : AppCompatActivity() {
     var androidColor = 0
     var freqNum = 1
     var freqDen = 1
-    var reminderHour = -1
-    var reminderMin = -1
-    var reminderDays: WeekdayList = WeekdayList.EVERY_DAY
     var targetType = NumericalHabitType.AT_LEAST
+
+    val reminders: MutableList<Reminder> = mutableListOf()
 
     override fun onCreate(state: Bundle?) {
         super.onCreate(state)
@@ -107,12 +109,7 @@ class EditHabitActivity : AppCompatActivity() {
             freqNum = habit.frequency.numerator
             freqDen = habit.frequency.denominator
             targetType = habit.targetType
-            val firstReminder = habit.reminders.firstOrNull()
-            if (firstReminder != null) {
-                reminderHour = firstReminder.hour
-                reminderMin = firstReminder.minute
-                reminderDays = firstReminder.days
-            }
+            reminders.addAll(habit.reminders)
             binding.nameInput.setText(habit.name)
             binding.questionInput.setText(habit.question)
             binding.notesInput.setText(habit.description)
@@ -128,9 +125,6 @@ class EditHabitActivity : AppCompatActivity() {
             color = PaletteColor(state.getInt("paletteColor"))
             freqNum = state.getInt("freqNum")
             freqDen = state.getInt("freqDen")
-            reminderHour = state.getInt("reminderHour")
-            reminderMin = state.getInt("reminderMin")
-            reminderDays = WeekdayList(state.getInt("reminderDays"))
         }
 
         updateColors()
@@ -210,43 +204,10 @@ class EditHabitActivity : AppCompatActivity() {
             builder.show()
         }
 
-        populateReminder()
-        binding.reminderTimePicker.setOnClickListener {
-            val currentHour = if (reminderHour >= 0) reminderHour else 8
-            val currentMin = if (reminderMin >= 0) reminderMin else 0
-            val is24HourMode = DateFormat.is24HourFormat(this)
-            val dialog = TimePickerDialog.newInstance(
-                object : TimePickerDialog.OnTimeSetListener {
-                    override fun onTimeSet(view: RadialPickerLayout?, hourOfDay: Int, minute: Int) {
-                        reminderHour = hourOfDay
-                        reminderMin = minute
-                        populateReminder()
-                    }
+        populateReminders()
 
-                    override fun onTimeCleared(view: RadialPickerLayout?) {
-                        reminderHour = -1
-                        reminderMin = -1
-                        reminderDays = WeekdayList.EVERY_DAY
-                        populateReminder()
-                    }
-                },
-                currentHour,
-                currentMin,
-                is24HourMode,
-                androidColor
-            )
-            dialog.dismissCurrentAndShow(supportFragmentManager, "timePicker")
-        }
-
-        binding.reminderDatePicker.setOnClickListener {
-            val dialog = WeekdayPickerDialog()
-            dialog.setListener { days: WeekdayList ->
-                reminderDays = days
-                if (reminderDays.isEmpty) reminderDays = WeekdayList.EVERY_DAY
-                populateReminder()
-            }
-            dialog.setSelectedDays(reminderDays)
-            dialog.dismissCurrentAndShow(supportFragmentManager, "dayPicker")
+        binding.addReminderButton.setOnClickListener {
+            showTimePickerForNewReminder()
         }
 
         binding.buttonSave.setOnClickListener {
@@ -256,6 +217,66 @@ class EditHabitActivity : AppCompatActivity() {
         for (fragment in supportFragmentManager.fragments) {
             (fragment as DialogFragment).dismiss()
         }
+    }
+
+    private fun showTimePickerForNewReminder() {
+        val is24HourMode = DateFormat.is24HourFormat(this)
+        val dialog = TimePickerDialog.newInstance(
+            object : TimePickerDialog.OnTimeSetListener {
+                override fun onTimeSet(view: RadialPickerLayout?, hourOfDay: Int, minute: Int) {
+                    val reminder = Reminder(hourOfDay, minute, WeekdayList.EVERY_DAY)
+                    reminders.add(reminder)
+                    populateReminders()
+                }
+                override fun onTimeCleared(view: RadialPickerLayout?) {}
+            },
+            8, 0, is24HourMode, androidColor
+        )
+        dialog.dismissCurrentAndShow(supportFragmentManager, "timePicker_new")
+    }
+
+    private fun populateReminders() {
+        binding.remindersContainer.removeAllViews()
+        reminders.forEachIndexed { index, reminder ->
+            val row = LinearLayout(this).apply {
+                orientation = LinearLayout.HORIZONTAL
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+            }
+
+            val timeText = TextView(this).apply {
+                text = formatTime(this@EditHabitActivity, reminder.hour, reminder.minute)
+                textSize = 16f
+                layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+                setPadding(48, 24, 16, 24)
+                setTextColor(currentThemeTextColor())
+            }
+
+            val deleteBtn = TextView(this).apply {
+                text = "✕"
+                textSize = 16f
+                setPadding(16, 24, 48, 24)
+                setTextColor(currentThemeTextColor())
+                setOnClickListener {
+                    reminders.removeAt(index)
+                    populateReminders()
+                }
+            }
+
+            row.addView(timeText)
+            row.addView(deleteBtn)
+            binding.remindersContainer.addView(row)
+        }
+    }
+
+    private fun currentThemeTextColor(): Int {
+        val attrs = intArrayOf(android.R.attr.textColorPrimary)
+        val ta = obtainStyledAttributes(attrs)
+        val color = ta.getColor(0, 0xFF000000.toInt())
+        ta.recycle()
+        return color
     }
 
     private fun save() {
@@ -273,9 +294,7 @@ class EditHabitActivity : AppCompatActivity() {
         habit.description = binding.notesInput.text.trim().toString()
         habit.color = color
         habit.reminders.clear()
-        if (reminderHour >= 0) {
-            habit.reminders.add(Reminder(reminderHour, reminderMin, reminderDays))
-        }
+        habit.reminders.addAll(reminders)
 
         habit.frequency = Frequency(freqNum, freqDen)
         if (habitType == HabitType.NUMERICAL) {
@@ -286,17 +305,9 @@ class EditHabitActivity : AppCompatActivity() {
         habit.type = habitType
 
         val command = if (habitId >= 0) {
-            EditHabitCommand(
-                component.habitList,
-                habitId,
-                habit
-            )
+            EditHabitCommand(component.habitList, habitId, habit)
         } else {
-            CreateHabitCommand(
-                component.modelFactory,
-                component.habitList,
-                habit
-            )
+            CreateHabitCommand(component.modelFactory, component.habitList, habit)
         }
         component.commandRunner.run(command)
         finish()
@@ -315,20 +326,6 @@ class EditHabitActivity : AppCompatActivity() {
             }
         }
         return isValid
-    }
-
-    private fun populateReminder() {
-        if (reminderHour < 0) {
-            binding.reminderTimePicker.text = getString(R.string.reminder_off)
-            binding.reminderDatePicker.visibility = View.GONE
-            binding.reminderDivider.visibility = View.GONE
-        } else {
-            val time = formatTime(this, reminderHour, reminderMin)
-            binding.reminderTimePicker.text = time
-            binding.reminderDatePicker.visibility = View.VISIBLE
-            binding.reminderDivider.visibility = View.VISIBLE
-            binding.reminderDatePicker.text = reminderDays.toFormattedString(this)
-        }
     }
 
     @SuppressLint("StringFormatMatches")
@@ -372,9 +369,6 @@ class EditHabitActivity : AppCompatActivity() {
             putInt("androidColor", androidColor)
             putInt("freqNum", freqNum)
             putInt("freqDen", freqDen)
-            putInt("reminderHour", reminderHour)
-            putInt("reminderMin", reminderMin)
-            putInt("reminderDays", reminderDays.toInteger())
         }
     }
 }
