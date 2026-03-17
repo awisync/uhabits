@@ -50,10 +50,3 @@
     <color name="color47">#212121</color>
     <color name="color48">#212121</color>
 </resources>
-```
-
----
-
-### 📁 File 2 - Kuch nahi karna:
-```
-uhabits-core/src/jvmMain/java/org/isoron/uhabits/core/models/PaletteColor.kt
