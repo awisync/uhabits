@@ -107,7 +107,7 @@
     <color name="white_aa">#AAffffff</color>
     <color name="black">#000000</color>
     <color name="color_background">#FAFAFA</color>
-    <color name="ic_launcher_background">#009688</color>
+    <color name="ic_launcher_background">#075E54</color>
 
     <array name="material_colors">
         <item>#F44336</item>
