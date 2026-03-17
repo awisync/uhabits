@@ -18,6 +18,7 @@
  */
 package org.isoron.uhabits.core.models.sqlite
 
+import org.isoron.uhabits.core.database.Database
 import org.isoron.uhabits.core.database.Repository
 import org.isoron.uhabits.core.models.Habit
 import org.isoron.uhabits.core.models.HabitList
@@ -25,15 +26,15 @@ import org.isoron.uhabits.core.models.HabitMatcher
 import org.isoron.uhabits.core.models.ModelFactory
 import org.isoron.uhabits.core.models.memory.MemoryHabitList
 import org.isoron.uhabits.core.models.sqlite.records.HabitRecord
+import org.isoron.uhabits.core.models.sqlite.records.ReminderRecord
 import javax.inject.Inject
 
-/**
- * Implementation of a [HabitList] that is backed by SQLite.
- */
 class SQLiteHabitList @Inject constructor(private val modelFactory: ModelFactory) : HabitList() {
     private val repository: Repository<HabitRecord> = modelFactory.buildHabitListRepository()
+    private val reminderRepository: Repository<ReminderRecord> = modelFactory.buildReminderRepository()
     private val list: MemoryHabitList = MemoryHabitList()
     private var loaded = false
+
     private fun loadRecords() {
         if (loaded) return
         loaded = true
@@ -45,9 +46,29 @@ class SQLiteHabitList @Inject constructor(private val modelFactory: ModelFactory
             val h = modelFactory.buildHabit()
             rec.copyTo(h)
             (h.originalEntries as SQLiteEntryList).habitId = h.id
+            loadRemindersForHabit(h)
             list.add(h)
         }
         if (shouldRebuildOrder) rebuildOrder()
+    }
+
+    private fun loadRemindersForHabit(habit: Habit) {
+        val habitId = habit.id ?: return
+        val records = reminderRepository.findAll("where habit=?", habitId.toString())
+        habit.reminders.clear()
+        for (record in records) {
+            habit.reminders.add(record.toReminder())
+        }
+    }
+
+    private fun saveRemindersForHabit(habit: Habit) {
+        val habitId = habit.id ?: return
+        reminderRepository.execSQL("delete from Reminders where habit=?", habitId)
+        for (reminder in habit.reminders) {
+            val record = ReminderRecord()
+            record.copyFrom(habitId, reminder)
+            reminderRepository.save(record)
+        }
     }
 
     @Synchronized
@@ -59,6 +80,7 @@ class SQLiteHabitList @Inject constructor(private val modelFactory: ModelFactory
         repository.save(record)
         habit.id = record.id
         (habit.originalEntries as SQLiteEntryList).habitId = record.id
+        saveRemindersForHabit(habit)
         list.add(habit)
         observable.notifyListeners()
     }
@@ -132,11 +154,11 @@ class SQLiteHabitList @Inject constructor(private val modelFactory: ModelFactory
     override fun remove(h: Habit) {
         loadRecords()
         list.remove(h)
-        val record = repository.find(
-            h.id!!
-        ) ?: throw RuntimeException("habit not in database")
+        val record = repository.find(h.id!!)
+            ?: throw RuntimeException("habit not in database")
         repository.executeAsTransaction {
             h.originalEntries.clear()
+            reminderRepository.execSQL("delete from Reminders where habit=?", h.id!!)
             repository.remove(record)
         }
         rebuildOrder()
@@ -148,6 +170,7 @@ class SQLiteHabitList @Inject constructor(private val modelFactory: ModelFactory
         list.removeAll()
         repository.execSQL("delete from habits")
         repository.execSQL("delete from repetitions")
+        repository.execSQL("delete from Reminders")
         observable.notifyListeners()
     }
 
@@ -155,12 +178,8 @@ class SQLiteHabitList @Inject constructor(private val modelFactory: ModelFactory
     override fun reorder(from: Habit, to: Habit) {
         loadRecords()
         list.reorder(from, to)
-        val fromRecord = repository.find(
-            from.id!!
-        )
-        val toRecord = repository.find(
-            to.id!!
-        )
+        val fromRecord = repository.find(from.id!!)
+        val toRecord = repository.find(to.id!!)
         if (fromRecord == null) throw RuntimeException("habit not in database")
         if (toRecord == null) throw RuntimeException("habit not in database")
         if (toRecord.position!! < fromRecord.position!!) {
@@ -204,6 +223,7 @@ class SQLiteHabitList @Inject constructor(private val modelFactory: ModelFactory
             val record = repository.find(h.id!!) ?: continue
             record.copyFrom(h)
             repository.save(record)
+            saveRemindersForHabit(h)
         }
         observable.notifyListeners()
     }
