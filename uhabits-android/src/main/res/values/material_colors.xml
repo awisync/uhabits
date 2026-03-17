@@ -94,7 +94,7 @@
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
 
-    <integer-array name="material_colors">
+    <array name="material_colors">
         <item>#F44336</item>
         <item>#E91E63</item>
         <item>#9C27B0</item>
@@ -144,5 +144,5 @@
         <item>#BF360C</item>
         <item>#3E2723</item>
         <item>#FFFFFF</item>
-    </integer-array>
+    </array>
 </resources>
