@@ -59,28 +59,30 @@ class ReminderScheduler @Inject constructor(
             sys.log("ReminderScheduler", "habit=" + habit.id + " has no reminder. Skipping.")
             return
         }
-        var reminderTime = Objects.requireNonNull(habit.reminder)!!.timeInMillis
-        val snoozeReminderTime = widgetPreferences.getSnoozeTime(habit.id!!)
-        if (snoozeReminderTime != 0L) {
-            val now = applyTimezone(getLocalTime())
-            sys.log(
-                "ReminderScheduler",
-                String.format(
-                    Locale.US,
-                    "Habit %d has been snoozed until %d",
-                    habit.id,
-                    snoozeReminderTime
+        for (reminder in habit.reminders) {
+            var reminderTime = reminder.timeInMillis
+            val snoozeReminderTime = widgetPreferences.getSnoozeTime(habit.id!!)
+            if (snoozeReminderTime != 0L) {
+                val now = applyTimezone(getLocalTime())
+                sys.log(
+                    "ReminderScheduler",
+                    String.format(
+                        Locale.US,
+                        "Habit %d has been snoozed until %d",
+                        habit.id,
+                        snoozeReminderTime
+                    )
                 )
-            )
-            if (snoozeReminderTime > now) {
-                sys.log("ReminderScheduler", "Snooze time is in the future. Accepting.")
-                reminderTime = snoozeReminderTime
-            } else {
-                sys.log("ReminderScheduler", "Snooze time is in the past. Discarding.")
-                widgetPreferences.removeSnoozeTime(habit.id!!)
+                if (snoozeReminderTime > now) {
+                    sys.log("ReminderScheduler", "Snooze time is in the future. Accepting.")
+                    reminderTime = snoozeReminderTime
+                } else {
+                    sys.log("ReminderScheduler", "Snooze time is in the past. Discarding.")
+                    widgetPreferences.removeSnoozeTime(habit.id!!)
+                }
             }
+            scheduleAtTime(habit, reminderTime)
         }
-        scheduleAtTime(habit, reminderTime)
     }
 
     @Synchronized
