@@ -26,11 +26,9 @@ import org.isoron.uhabits.core.models.ScoreList
 import org.isoron.uhabits.core.models.StreakList
 import org.isoron.uhabits.core.models.sqlite.records.EntryRecord
 import org.isoron.uhabits.core.models.sqlite.records.HabitRecord
+import org.isoron.uhabits.core.models.sqlite.records.ReminderRecord
 import javax.inject.Inject
 
-/**
- * Factory that provides models backed by an SQLite database.
- */
 class SQLModelFactory
 @Inject constructor(
     val database: Database
@@ -46,4 +44,7 @@ class SQLModelFactory
 
     override fun buildRepetitionListRepository() =
         Repository(EntryRecord::class.java, database)
+
+    override fun buildReminderRepository() =
+        Repository(ReminderRecord::class.java, database)
 }
