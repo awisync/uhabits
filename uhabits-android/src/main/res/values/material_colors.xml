@@ -31,6 +31,7 @@
     <color name="blue_300">#64B5F6</color>
     <color name="blue_500">#2196F3</color>
     <color name="blue_700">#1976D2</color>
+    <color name="blue_800">#1565C0</color>
     <color name="light_blue_50">#E1F5FE</color>
     <color name="light_blue_100">#B3E5FC</color>
     <color name="light_blue_200">#81D4FA</color>
@@ -86,13 +87,26 @@
     <color name="brown_200">#BCAAA4</color>
     <color name="brown_500">#795548</color>
     <color name="brown_700">#5D4037</color>
+    <color name="grey_50">#FAFAFA</color>
     <color name="grey_100">#F5F5F5</color>
+    <color name="grey_200">#EEEEEE</color>
     <color name="grey_300">#E0E0E0</color>
+    <color name="grey_350">#D6D6D6</color>
+    <color name="grey_400">#BDBDBD</color>
     <color name="grey_500">#9E9E9E</color>
     <color name="grey_600">#757575</color>
+    <color name="grey_700">#616161</color>
+    <color name="grey_750">#4A4A4A</color>
+    <color name="grey_800">#424242</color>
+    <color name="grey_850">#303030</color>
+    <color name="grey_900">#212121</color>
+    <color name="grey_950">#121212</color>
     <color name="blue_grey_500">#607D8B</color>
     <color name="white">#ffffff</color>
+    <color name="white_a0">#A0ffffff</color>
+    <color name="white_aa">#AAffffff</color>
     <color name="black">#000000</color>
+    <color name="color_background">#FAFAFA</color>
 
     <array name="material_colors">
         <item>#F44336</item>
@@ -144,5 +158,161 @@
         <item>#BF360C</item>
         <item>#3E2723</item>
         <item>#FFFFFF</item>
+    </array>
+
+    <array name="lightPalette">
+        <item>@color/color0</item>
+        <item>@color/color1</item>
+        <item>@color/color2</item>
+        <item>@color/color3</item>
+        <item>@color/color4</item>
+        <item>@color/color5</item>
+        <item>@color/color6</item>
+        <item>@color/color7</item>
+        <item>@color/color8</item>
+        <item>@color/color9</item>
+        <item>@color/color10</item>
+        <item>@color/color11</item>
+        <item>@color/color12</item>
+        <item>@color/color13</item>
+        <item>@color/color14</item>
+        <item>@color/color15</item>
+        <item>@color/color16</item>
+        <item>@color/color17</item>
+        <item>@color/color18</item>
+        <item>@color/color19</item>
+        <item>@color/color20</item>
+        <item>@color/color21</item>
+        <item>@color/color22</item>
+        <item>@color/color23</item>
+        <item>@color/color24</item>
+        <item>@color/color25</item>
+        <item>@color/color26</item>
+        <item>@color/color27</item>
+        <item>@color/color28</item>
+        <item>@color/color29</item>
+        <item>@color/color30</item>
+        <item>@color/color31</item>
+        <item>@color/color32</item>
+        <item>@color/color33</item>
+        <item>@color/color34</item>
+        <item>@color/color35</item>
+        <item>@color/color36</item>
+        <item>@color/color37</item>
+        <item>@color/color38</item>
+        <item>@color/color39</item>
+        <item>@color/color40</item>
+        <item>@color/color41</item>
+        <item>@color/color42</item>
+        <item>@color/color43</item>
+        <item>@color/color44</item>
+        <item>@color/color45</item>
+        <item>@color/color46</item>
+        <item>@color/color47</item>
+        <item>@color/color48</item>
+    </array>
+
+    <array name="darkPalette">
+        <item>@color/color0</item>
+        <item>@color/color1</item>
+        <item>@color/color2</item>
+        <item>@color/color3</item>
+        <item>@color/color4</item>
+        <item>@color/color5</item>
+        <item>@color/color6</item>
+        <item>@color/color7</item>
+        <item>@color/color8</item>
+        <item>@color/color9</item>
+        <item>@color/color10</item>
+        <item>@color/color11</item>
+        <item>@color/color12</item>
+        <item>@color/color13</item>
+        <item>@color/color14</item>
+        <item>@color/color15</item>
+        <item>@color/color16</item>
+        <item>@color/color17</item>
+        <item>@color/color18</item>
+        <item>@color/color19</item>
+        <item>@color/color20</item>
+        <item>@color/color21</item>
+        <item>@color/color22</item>
+        <item>@color/color23</item>
+        <item>@color/color24</item>
+        <item>@color/color25</item>
+        <item>@color/color26</item>
+        <item>@color/color27</item>
+        <item>@color/color28</item>
+        <item>@color/color29</item>
+        <item>@color/color30</item>
+        <item>@color/color31</item>
+        <item>@color/color32</item>
+        <item>@color/color33</item>
+        <item>@color/color34</item>
+        <item>@color/color35</item>
+        <item>@color/color36</item>
+        <item>@color/color37</item>
+        <item>@color/color38</item>
+        <item>@color/color39</item>
+        <item>@color/color40</item>
+        <item>@color/color41</item>
+        <item>@color/color42</item>
+        <item>@color/color43</item>
+        <item>@color/color44</item>
+        <item>@color/color45</item>
+        <item>@color/color46</item>
+        <item>@color/color47</item>
+        <item>@color/color48</item>
+    </array>
+
+    <array name="transparentWidgetPalette">
+        <item>@color/color0</item>
+        <item>@color/color1</item>
+        <item>@color/color2</item>
+        <item>@color/color3</item>
+        <item>@color/color4</item>
+        <item>@color/color5</item>
+        <item>@color/color6</item>
+        <item>@color/color7</item>
+        <item>@color/color8</item>
+        <item>@color/color9</item>
+        <item>@color/color10</item>
+        <item>@color/color11</item>
+        <item>@color/color12</item>
+        <item>@color/color13</item>
+        <item>@color/color14</item>
+        <item>@color/color15</item>
+        <item>@color/color16</item>
+        <item>@color/color17</item>
+        <item>@color/color18</item>
+        <item>@color/color19</item>
+        <item>@color/color20</item>
+        <item>@color/color21</item>
+        <item>@color/color22</item>
+        <item>@color/color23</item>
+        <item>@color/color24</item>
+        <item>@color/color25</item>
+        <item>@color/color26</item>
+        <item>@color/color27</item>
+        <item>@color/color28</item>
+        <item>@color/color29</item>
+        <item>@color/color30</item>
+        <item>@color/color31</item>
+        <item>@color/color32</item>
+        <item>@color/color33</item>
+        <item>@color/color34</item>
+        <item>@color/color35</item>
+        <item>@color/color36</item>
+        <item>@color/color37</item>
+        <item>@color/color38</item>
+        <item>@color/color39</item>
+        <item>@color/color40</item>
+        <item>@color/color41</item>
+        <item>@color/color42</item>
+        <item>@color/color43</item>
+        <item>@color/color44</item>
+        <item>@color/color45</item>
+        <item>@color/color46</item>
+        <item>@color/color47</item>
+        <item>@color/color48</item>
     </array>
 </resources>
