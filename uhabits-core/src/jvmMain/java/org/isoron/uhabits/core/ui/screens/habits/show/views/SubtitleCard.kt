@@ -48,7 +48,7 @@ class SubtitleCardPresenter {
             frequency = habit.frequency,
             isNumerical = habit.isNumerical,
             question = habit.question,
-            reminder = habit.reminder,
+            reminder = habit.reminders.firstOrNull(),
             targetValue = habit.targetValue,
             targetType = habit.targetType,
             unit = habit.unit,
