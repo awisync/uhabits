@@ -31,7 +31,6 @@ import org.isoron.uhabits.core.tasks.Task
 import org.isoron.uhabits.core.tasks.TaskRunner
 import java.util.HashMap
 import java.util.Locale
-import java.util.Objects
 import javax.inject.Inject
 
 @AppScope
@@ -42,6 +41,7 @@ class NotificationTray @Inject constructor(
     private val systemTray: SystemTray
 ) : CommandRunner.Listener, Preferences.Listener {
     private val active: HashMap<Habit, NotificationData> = HashMap()
+
     fun cancel(habit: Habit) {
         val notificationId = getNotificationId(habit)
         systemTray.removeNotification(notificationId)
@@ -104,13 +104,15 @@ class NotificationTray @Inject constructor(
             timestamp: Timestamp,
             reminderTime: Long
         )
-
         fun log(msg: String)
     }
 
     internal class NotificationData(val timestamp: Timestamp, val reminderTime: Long)
-    private inner class ShowNotificationTask(private val habit: Habit, data: NotificationData) :
-        Task {
+
+    private inner class ShowNotificationTask(
+        private val habit: Habit,
+        data: NotificationData
+    ) : Task {
         var isCompleted = false
         private val timestamp: Timestamp = data.timestamp
         private val reminderTime: Long = data.reminderTime
@@ -123,41 +125,25 @@ class NotificationTray @Inject constructor(
             systemTray.log("Showing notification for habit=" + habit.id)
             if (isCompleted && habit.targetType != NumericalHabitType.AT_MOST) {
                 systemTray.log(
-                    String.format(
-                        Locale.US,
-                        "Habit %d already checked. Skipping.",
-                        habit.id
-                    )
+                    String.format(Locale.US, "Habit %d already checked. Skipping.", habit.id)
                 )
                 return
             }
             if (!habit.hasReminder()) {
                 systemTray.log(
-                    String.format(
-                        Locale.US,
-                        "Habit %d does not have a reminder. Skipping.",
-                        habit.id
-                    )
+                    String.format(Locale.US, "Habit %d does not have a reminder. Skipping.", habit.id)
                 )
                 return
             }
             if (habit.isArchived) {
                 systemTray.log(
-                    String.format(
-                        Locale.US,
-                        "Habit %d is archived. Skipping.",
-                        habit.id
-                    )
+                    String.format(Locale.US, "Habit %d is archived. Skipping.", habit.id)
                 )
                 return
             }
             if (!shouldShowReminderToday()) {
                 systemTray.log(
-                    String.format(
-                        Locale.US,
-                        "Habit %d not supposed to run today. Skipping.",
-                        habit.id
-                    )
+                    String.format(Locale.US, "Habit %d not supposed to run today. Skipping.", habit.id)
                 )
                 return
             }
@@ -171,8 +157,8 @@ class NotificationTray @Inject constructor(
 
         private fun shouldShowReminderToday(): Boolean {
             if (!habit.hasReminder()) return false
-            val reminder = habit.reminder
-            val reminderDays = Objects.requireNonNull(reminder)!!.days.toArray()
+            val reminder = habit.reminders.firstOrNull() ?: return false
+            val reminderDays = reminder.days.toArray()
             val weekday = timestamp.weekday
             return reminderDays[weekday]
         }
