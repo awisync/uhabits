@@ -162,7 +162,7 @@ class RewireDBImporter
             val minute = rewireReminder % 60
             val days = WeekdayList(reminderDays)
             val reminder = Reminder(hour, minute, days)
-            habit.reminder = reminder
+            habit.reminders.add(reminder)
             habitList.update(habit)
         } finally {
             c?.close()
