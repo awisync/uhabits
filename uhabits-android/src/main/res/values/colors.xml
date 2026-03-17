@@ -1,187 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright (C) 2016-2025 Álinson Santos Xavier <git@axavier.org>
-  ~
-  ~ This file is part of Loop Habit Tracker.
-  ~
-  ~ Loop Habit Tracker is free software: you can redistribute it and/or modify
-  ~ it under the terms of the GNU General Public License as published by the
-  ~ Free Software Foundation, either version 3 of the License, or (at your
-  ~ option) any later version.
-  ~
-  ~ Loop Habit Tracker is distributed in the hope that it will be useful, but
-  ~ WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-  ~ or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
-  ~ more details.
-  ~
-  ~ You should have received a copy of the GNU General Public License along
-  ~ with this program. If not, see <http://www.gnu.org/licenses/>.
-  -->
 <resources>
-    <array name="lightPalette">
-        <item>@color/red_700</item>
-        <item>@color/red_900</item>
-        <item>@color/pink_600</item>
-        <item>@color/pink_800</item>
-        <item>@color/deep_orange_700</item>
-        <item>@color/deep_orange_900</item>
-        <item>@color/orange_700</item>
-        <item>@color/orange_900</item>
-        <item>@color/amber_800</item>
-        <item>@color/yellow_800</item>
-        <item>@color/yellow_900</item>
-        <item>@color/lime_700</item>
-        <item>@color/lime_900</item>
-        <item>@color/light_green_600</item>
-        <item>@color/light_green_800</item>
-        <item>@color/green_700</item>
-        <item>@color/green_900</item>
-        <item>@color/teal_500</item>
-        <item>@color/teal_600</item>
-        <item>@color/teal_700</item>
-        <item>@color/teal_900</item>
-        <item>@color/cyan_600</item>
-        <item>@color/cyan_700</item>
-        <item>@color/cyan_900</item>
-        <item>@color/light_blue_600</item>
-        <item>@color/light_blue_800</item>
-        <item>@color/blue_700</item>
-        <item>@color/blue_900</item>
-        <item>@color/indigo_600</item>
-        <item>@color/indigo_700</item>
-        <item>@color/indigo_900</item>
-        <item>@color/deep_purple_600</item>
-        <item>@color/deep_purple_800</item>
-        <item>@color/purple_600</item>
-        <item>@color/purple_800</item>
-        <item>@color/purple_900</item>
-        <item>@color/brown_500</item>
-        <item>@color/brown_700</item>
-        <item>@color/brown_900</item>
-        <item>@color/blue_grey_500</item>
-        <item>@color/blue_grey_600</item>
-        <item>@color/blue_grey_700</item>
-        <item>@color/blue_grey_800</item>
-        <item>@color/grey_500</item>
-        <item>@color/grey_600</item>
-        <item>@color/grey_700</item>
-        <item>@color/grey_800</item>
-        <item>@color/grey_900</item>
-        <item>@color/grey_900</item>
-    </array>
-
-    <array name="darkPalette">
-        <item>@color/red_200</item>
-        <item>@color/red_100</item>
-        <item>@color/pink_200</item>
-        <item>@color/pink_100</item>
-        <item>@color/deep_orange_200</item>
-        <item>@color/deep_orange_100</item>
-        <item>@color/orange_200</item>
-        <item>@color/orange_100</item>
-        <item>@color/amber_100</item>
-        <item>@color/yellow_200</item>
-        <item>@color/yellow_100</item>
-        <item>@color/lime_200</item>
-        <item>@color/lime_100</item>
-        <item>@color/light_green_200</item>
-        <item>@color/light_green_100</item>
-        <item>@color/green_A200</item>
-        <item>@color/green_100</item>
-        <item>@color/teal_A100</item>
-        <item>@color/teal_200</item>
-        <item>@color/teal_A200</item>
-        <item>@color/teal_100</item>
-        <item>@color/cyan_200</item>
-        <item>@color/cyan_A100</item>
-        <item>@color/cyan_100</item>
-        <item>@color/light_blue_200</item>
-        <item>@color/light_blue_100</item>
-        <item>@color/blue_300</item>
-        <item>@color/blue_100</item>
-        <item>@color/indigo_200</item>
-        <item>@color/indigo_A100</item>
-        <item>@color/indigo_100</item>
-        <item>@color/deep_purple_200</item>
-        <item>@color/deep_purple_100</item>
-        <item>@color/purple_200</item>
-        <item>@color/purple_100</item>
-        <item>@color/purple_A100</item>
-        <item>@color/brown_200</item>
-        <item>@color/brown_100</item>
-        <item>@color/brown_50</item>
-        <item>@color/blue_grey_200</item>
-        <item>@color/blue_grey_300</item>
-        <item>@color/blue_grey_100</item>
-        <item>@color/blue_grey_50</item>
-        <item>@color/grey_500</item>
-        <item>@color/grey_400</item>
-        <item>@color/grey_300</item>
-        <item>@color/grey_200</item>
-        <item>@color/grey_100</item>
-        <item>@color/grey_50</item>
-    </array>
-
-    <array name="transparentWidgetPalette">
-        <item>@color/red_800</item>
-        <item>@color/red_900</item>
-        <item>@color/pink_700</item>
-        <item>@color/pink_900</item>
-        <item>@color/deep_orange_800</item>
-        <item>@color/deep_orange_900</item>
-        <item>@color/orange_800</item>
-        <item>@color/orange_900</item>
-        <item>@color/amber_800</item>
-        <item>@color/yellow_800</item>
-        <item>@color/yellow_900</item>
-        <item>@color/lime_800</item>
-        <item>@color/lime_900</item>
-        <item>@color/light_green_600</item>
-        <item>@color/light_green_800</item>
-        <item>@color/green_700</item>
-        <item>@color/green_900</item>
-        <item>@color/teal_500</item>
-        <item>@color/teal_700</item>
-        <item>@color/teal_800</item>
-        <item>@color/teal_900</item>
-        <item>@color/cyan_700</item>
-        <item>@color/cyan_800</item>
-        <item>@color/cyan_900</item>
-        <item>@color/light_blue_700</item>
-        <item>@color/light_blue_800</item>
-        <item>@color/blue_800</item>
-        <item>@color/blue_900</item>
-        <item>@color/indigo_700</item>
-        <item>@color/indigo_800</item>
-        <item>@color/indigo_900</item>
-        <item>@color/deep_purple_700</item>
-        <item>@color/deep_purple_800</item>
-        <item>@color/purple_700</item>
-        <item>@color/purple_800</item>
-        <item>@color/purple_900</item>
-        <item>@color/brown_600</item>
-        <item>@color/brown_800</item>
-        <item>@color/brown_900</item>
-        <item>@color/blue_grey_500</item>
-        <item>@color/blue_grey_600</item>
-        <item>@color/blue_grey_700</item>
-        <item>@color/blue_grey_800</item>
-        <item>@color/black_aa</item>
-        <item>@color/black_aa</item>
-        <item>@color/black_aa</item>
-        <item>@color/black_aa</item>
-        <item>@color/black_aa</item>
-        <item>@color/black_aa</item>
-    </array>
+    <color name="color0">#D32F2F</color>
+    <color name="color1">#E64A19</color>
+    <color name="color2">#F57F17</color>
+    <color name="color3">#F9A825</color>
+    <color name="color4">#FBC02D</color>
+    <color name="color5">#AFB42B</color>
+    <color name="color6">#689F38</color>
+    <color name="color7">#388E3C</color>
+    <color name="color8">#00796B</color>
+    <color name="color9">#0097A7</color>
+    <color name="color10">#0288D1</color>
+    <color name="color11">#1565C0</color>
+    <color name="color12">#283593</color>
+    <color name="color13">#4527A0</color>
+    <color name="color14">#6A1B9A</color>
+    <color name="color15">#AD1457</color>
+    <color name="color16">#C62828</color>
+    <color name="color17">#BF360C</color>
+    <color name="color18">#E65100</color>
+    <color name="color19">#FF6F00</color>
+    <color name="color20">#558B2F</color>
+    <color name="color21">#2E7D32</color>
+    <color name="color22">#1B5E20</color>
+    <color name="color23">#004D40</color>
+    <color name="color24">#006064</color>
+    <color name="color25">#01579B</color>
+    <color name="color26">#0D47A1</color>
+    <color name="color27">#1A237E</color>
+    <color name="color28">#311B92</color>
+    <color name="color29">#4A148C</color>
+    <color name="color30">#880E4F</color>
+    <color name="color31">#B71C1C</color>
+    <color name="color32">#EF9A9A</color>
+    <color name="color33">#FFCC80</color>
+    <color name="color34">#FFF59D</color>
+    <color name="color35">#C5E1A5</color>
+    <color name="color36">#80CBC4</color>
+    <color name="color37">#81D4FA</color>
+    <color name="color38">#9FA8DA</color>
+    <color name="color39">#CE93D8</color>
+    <color name="color40">#F48FB1</color>
+    <color name="color41">#BCAAA4</color>
+    <color name="color42">#B0BEC5</color>
+    <color name="color43">#757575</color>
+    <color name="color44">#37474F</color>
+    <color name="color45">#212121</color>
+    <color name="color46">#FFFFFF</color>
+    <color name="color47">#607D8B</color>
+    <color name="color48">#FF6600</color>
 </resources>
-```
-
-**Step 5** — Commit karo
-
----
-
-**FILE 2 — `PaletteColor.kt`**
-
-**Step 6** — Jao:
-```
-github.com/awisync/uhabits/blob/dev/uhabits-core/src/commonMain/kotlin/org/isoron/uhabits/core/models/PaletteColor.kt
