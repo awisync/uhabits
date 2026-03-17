@@ -1,52 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="color0">#D32F2F</color>
-    <color name="color1">#E64A19</color>
-    <color name="color2">#F57F17</color>
-    <color name="color3">#F9A825</color>
-    <color name="color4">#FBC02D</color>
-    <color name="color5">#AFB42B</color>
-    <color name="color6">#689F38</color>
-    <color name="color7">#388E3C</color>
-    <color name="color8">#00796B</color>
-    <color name="color9">#0097A7</color>
-    <color name="color10">#0288D1</color>
-    <color name="color11">#1565C0</color>
-    <color name="color12">#283593</color>
-    <color name="color13">#4527A0</color>
-    <color name="color14">#6A1B9A</color>
-    <color name="color15">#AD1457</color>
-    <color name="color16">#C62828</color>
-    <color name="color17">#BF360C</color>
-    <color name="color18">#E65100</color>
-    <color name="color19">#FF6F00</color>
-    <color name="color20">#558B2F</color>
-    <color name="color21">#2E7D32</color>
-    <color name="color22">#1B5E20</color>
-    <color name="color23">#004D40</color>
-    <color name="color24">#006064</color>
-    <color name="color25">#01579B</color>
-    <color name="color26">#0D47A1</color>
-    <color name="color27">#1A237E</color>
-    <color name="color28">#311B92</color>
-    <color name="color29">#4A148C</color>
-    <color name="color30">#880E4F</color>
-    <color name="color31">#B71C1C</color>
-    <color name="color32">#EF9A9A</color>
-    <color name="color33">#FFCC80</color>
-    <color name="color34">#FFF59D</color>
-    <color name="color35">#C5E1A5</color>
-    <color name="color36">#80CBC4</color>
-    <color name="color37">#81D4FA</color>
-    <color name="color38">#9FA8DA</color>
-    <color name="color39">#CE93D8</color>
-    <color name="color40">#F48FB1</color>
-    <color name="color41">#BCAAA4</color>
-    <color name="color42">#B0BEC5</color>
-    <color name="color43">#757575</color>
-    <color name="color44">#37474F</color>
-    <color name="color45">#212121</color>
-    <color name="color46">#FFFFFF</color>
-    <color name="color47">#607D8B</color>
-    <color name="color48">#FF6600</color>
+    <color name="color1">#B71C1C</color>
+    <color name="color2">#D81B60</color>
+    <color name="color3">#880E4F</color>
+    <color name="color4">#E64A19</color>
+    <color name="color5">#BF360C</color>
+    <color name="color6">#F57C00</color>
+    <color name="color7">#E65100</color>
+    <color name="color8">#FF8F00</color>
+    <color name="color9">#F9A825</color>
+    <color name="color10">#F57F17</color>
+    <color name="color11">#AFB42B</color>
+    <color name="color12">#827717</color>
+    <color name="color13">#7CB342</color>
+    <color name="color14">#558B2F</color>
+    <color name="color15">#388E3C</color>
+    <color name="color16">#1B5E20</color>
+    <color name="color17">#009688</color>
+    <color name="color18">#00897B</color>
+    <color name="color19">#00796B</color>
+    <color name="color20">#004D40</color>
+    <color name="color21">#00ACC1</color>
+    <color name="color22">#0097A7</color>
+    <color name="color23">#006064</color>
+    <color name="color24">#039BE5</color>
+    <color name="color25">#0277BD</color>
+    <color name="color26">#1976D2</color>
+    <color name="color27">#0D47A1</color>
+    <color name="color28">#3949AB</color>
+    <color name="color29">#303F9F</color>
+    <color name="color30">#1A237E</color>
+    <color name="color31">#5E35B1</color>
+    <color name="color32">#4527A0</color>
+    <color name="color33">#8E24AA</color>
+    <color name="color34">#6A1B9A</color>
+    <color name="color35">#4A148C</color>
+    <color name="color36">#795548</color>
+    <color name="color37">#5D4037</color>
+    <color name="color38">#3E2723</color>
+    <color name="color39">#607D8B</color>
+    <color name="color40">#546E7A</color>
+    <color name="color41">#455A64</color>
+    <color name="color42">#37474F</color>
+    <color name="color43">#9E9E9E</color>
+    <color name="color44">#757575</color>
+    <color name="color45">#616161</color>
+    <color name="color46">#424242</color>
+    <color name="color47">#212121</color>
+    <color name="color48">#212121</color>
 </resources>
+```
+
+---
+
+### 📁 File 2 - Kuch nahi karna:
+```
+uhabits-core/src/jvmMain/java/org/isoron/uhabits/core/models/PaletteColor.kt
