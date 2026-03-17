@@ -82,7 +82,6 @@
                 android:orientation="horizontal"
                 android:baselineAligned="false">
 
-                <!-- Habit Title -->
                 <FrameLayout
                     style="@style/FormOuterBox"
                     android:layout_width="0dp"
@@ -97,12 +96,10 @@
                             android:maxLines="2"
                             android:maxLength="50"
                             android:inputType="textCapSentences|textMultiLine"
-                            android:hint="@string/yes_or_no_short_example"
-                            />
+                            android:hint="@string/yes_or_no_short_example" />
                     </LinearLayout>
                 </FrameLayout>
 
-                <!-- Habit Color -->
                 <FrameLayout
                     style="@style/FormOuterBox"
                     android:layout_width="80dp"
@@ -120,7 +117,6 @@
                             android:layout_marginRight="16dp"
                             android:layout_marginBottom="8dp"
                             android:backgroundTint="#E23673" />
-
                     </LinearLayout>
                 </FrameLayout>
             </LinearLayout>
@@ -135,8 +131,7 @@
                         android:id="@+id/questionInput"
                         style="@style/FormInput"
                         android:inputType="textCapSentences|textMultiLine"
-                        android:hint="@string/example_question_boolean"
-                         />
+                        android:hint="@string/example_question_boolean" />
                 </LinearLayout>
             </FrameLayout>
 
@@ -155,7 +150,7 @@
                 </LinearLayout>
             </FrameLayout>
 
-            <!-- Target value, unit and frequency -->
+            <!-- Unit -->
             <FrameLayout
                 android:id="@+id/unitOuterBox"
                 style="@style/FormOuterBox">
@@ -168,10 +163,11 @@
                         android:id="@+id/unitInput"
                         android:maxLines="1"
                         android:ems="10"
-                        android:hint="@string/measurable_units_example"/>
+                        android:hint="@string/measurable_units_example" />
                 </LinearLayout>
             </FrameLayout>
 
+            <!-- Target -->
             <LinearLayout
                 android:id="@+id/targetOuterBox"
                 android:layout_width="match_parent"
@@ -191,7 +187,7 @@
                             android:id="@+id/targetInput"
                             android:maxLines="1"
                             android:inputType="numberDecimal"
-                            android:hint="@string/example_target"/>
+                            android:hint="@string/example_target" />
                     </LinearLayout>
                 </FrameLayout>
                 <FrameLayout
@@ -206,12 +202,12 @@
                             style="@style/FormDropdown"
                             android:id="@+id/numericalFrequencyPicker"
                             android:text="@string/every_week"
-                            android:textColor="?attr/contrast100"
-                            />
+                            android:textColor="?attr/contrast100" />
                     </LinearLayout>
                 </FrameLayout>
             </LinearLayout>
 
+            <!-- Target Type -->
             <FrameLayout
                 android:id="@+id/targetTypeOuterBox"
                 style="@style/FormOuterBox">
@@ -222,35 +218,31 @@
                     <TextView
                         style="@style/FormDropdown"
                         android:id="@+id/targetTypePicker"
-                        android:textColor="?attr/contrast100"
-                        />
+                        android:textColor="?attr/contrast100" />
                 </LinearLayout>
             </FrameLayout>
 
-
-            <!-- Reminder -->
+            <!-- Reminders -->
             <FrameLayout style="@style/FormOuterBox">
                 <LinearLayout style="@style/FormInnerBox">
                     <TextView
                         style="@style/FormLabel"
                         android:text="@string/reminder" />
 
-                    <TextView
-                        style="@style/FormDropdown"
-                        android:id="@+id/reminderTimePicker"
-                        android:text="@string/reminder_off" />
-
-                    <View
-                        style="@style/FormDivider"
-                        android:id="@+id/reminderDivider"/>
+                    <LinearLayout
+                        android:id="@+id/remindersContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" />
 
                     <TextView
+                        android:id="@+id/addReminderButton"
                         style="@style/FormDropdown"
-                        android:id="@+id/reminderDatePicker"
-                        android:text="" />
+                        android:text="@string/add_reminder"
+                        android:textColor="?attr/colorAccent" />
+
                 </LinearLayout>
             </FrameLayout>
-
 
             <!-- Notes -->
             <FrameLayout style="@style/FormOuterBox">
@@ -258,7 +250,6 @@
                     <TextView
                         style="@style/FormLabel"
                         android:text="@string/notes" />
-
                     <EditText
                         android:id="@+id/notesInput"
                         style="@style/FormInput"
@@ -266,6 +257,7 @@
                         android:hint="@string/example_notes" />
                 </LinearLayout>
             </FrameLayout>
+
         </LinearLayout>
     </ScrollView>
 
