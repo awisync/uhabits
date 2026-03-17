@@ -34,9 +34,6 @@ import org.isoron.uhabits.core.utils.isSQLite3File
 import java.io.File
 import javax.inject.Inject
 
-/**
- * Class that imports database files exported by Rewire.
- */
 class RewireDBImporter
 @Inject constructor(
     private val habitList: HabitList,
