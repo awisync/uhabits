@@ -27,11 +27,7 @@ import org.isoron.uhabits.core.models.NumericalHabitType
 import org.isoron.uhabits.core.models.PaletteColor
 import org.isoron.uhabits.core.models.Reminder
 import org.isoron.uhabits.core.models.WeekdayList
-import java.util.Objects.requireNonNull
 
-/**
- * The SQLite database record corresponding to a [Habit].
- */
 @Table(name = "habits")
 class HabitRecord {
     @field:Column
@@ -108,11 +104,11 @@ class HabitRecord {
         reminderDays = 0
         reminderMin = null
         reminderHour = null
-        if (model.hasReminder()) {
-            val reminder = model.reminder
-            reminderHour = requireNonNull(reminder)!!.hour
-            reminderMin = reminder!!.minute
-            reminderDays = reminder.days.toInteger()
+        val firstReminder = model.reminders.firstOrNull()
+        if (firstReminder != null) {
+            reminderHour = firstReminder.hour
+            reminderMin = firstReminder.minute
+            reminderDays = firstReminder.days.toInteger()
         }
     }
 
@@ -130,12 +126,18 @@ class HabitRecord {
         habit.unit = unit!!
         habit.position = position!!
         habit.uuid = uuid
+        habit.reminders.clear()
         if (reminderHour != null && reminderMin != null) {
-            habit.reminder = Reminder(
-                reminderHour!!,
-                reminderMin!!,
-                WeekdayList(reminderDays!!)
+            habit.reminders.add(
+                Reminder(
+                    reminderHour!!,
+                    reminderMin!!,
+                    WeekdayList(reminderDays!!)
+                )
             )
         }
     }
 }
+```
+
+---
