@@ -30,7 +30,7 @@ data class Habit(
     var name: String = "",
     var position: Int = 0,
     var question: String = "",
-    var reminder: Reminder? = null,
+    var reminders: MutableList<Reminder> = mutableListOf(),
     var targetType: NumericalHabitType = NumericalHabitType.AT_LEAST,
     var targetValue: Double = 0.0,
     var type: HabitType = HabitType.YES_NO,
@@ -53,7 +53,7 @@ data class Habit(
     val uriString: String
         get() = "content://org.isoron.uhabits/habit/$id"
 
-    fun hasReminder(): Boolean = reminder != null
+    fun hasReminder(): Boolean = reminders.isNotEmpty()
 
     fun isCompletedToday(): Boolean {
         val today = DateUtils.getTodayWithOffset()
@@ -111,12 +111,11 @@ data class Habit(
         this.color = other.color
         this.description = other.description
         this.frequency = other.frequency
-        // this.id should not be copied
         this.isArchived = other.isArchived
         this.name = other.name
         this.position = other.position
         this.question = other.question
-        this.reminder = other.reminder
+        this.reminders = other.reminders.toMutableList()
         this.targetType = other.targetType
         this.targetValue = other.targetValue
         this.type = other.type
@@ -136,7 +135,7 @@ data class Habit(
         if (name != other.name) return false
         if (position != other.position) return false
         if (question != other.question) return false
-        if (reminder != other.reminder) return false
+        if (reminders != other.reminders) return false
         if (targetType != other.targetType) return false
         if (targetValue != other.targetValue) return false
         if (type != other.type) return false
@@ -155,7 +154,7 @@ data class Habit(
         result = 31 * result + name.hashCode()
         result = 31 * result + position
         result = 31 * result + question.hashCode()
-        result = 31 * result + (reminder?.hashCode() ?: 0)
+        result = 31 * result + reminders.hashCode()
         result = 31 * result + targetType.value
         result = 31 * result + targetValue.hashCode()
         result = 31 * result + type.value
