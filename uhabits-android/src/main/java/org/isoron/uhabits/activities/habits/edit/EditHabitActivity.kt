@@ -22,14 +22,14 @@ package org.isoron.uhabits.activities.habits.edit
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.content.res.Resources
+import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Html
 import android.text.Spanned
 import android.text.format.DateFormat
-import android.view.LayoutInflater
+import android.view.Gravity
 import android.view.View
 import android.widget.ArrayAdapter
-import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.StringRes
@@ -59,7 +59,6 @@ import org.isoron.uhabits.utils.applyRootViewInsets
 import org.isoron.uhabits.utils.applyToolbarInsets
 import org.isoron.uhabits.utils.dismissCurrentAndShow
 import org.isoron.uhabits.utils.formatTime
-import org.isoron.uhabits.utils.toFormattedString
 
 fun formatFrequency(freqNum: Int, freqDen: Int, resources: Resources) = when {
     freqNum == 1 && (freqDen == 30 || freqDen == 31) -> resources.getString(R.string.every_month)
@@ -87,6 +86,8 @@ class EditHabitActivity : AppCompatActivity() {
     var targetType = NumericalHabitType.AT_LEAST
 
     val reminders: MutableList<Reminder> = mutableListOf()
+
+    private val dayNames = listOf("S", "M", "T", "W", "T", "F", "S")
 
     override fun onCreate(state: Bundle?) {
         super.onCreate(state)
@@ -238,7 +239,19 @@ class EditHabitActivity : AppCompatActivity() {
     private fun populateReminders() {
         binding.remindersContainer.removeAllViews()
         reminders.forEachIndexed { index, reminder ->
+
+            // Main row
             val row = LinearLayout(this).apply {
+                orientation = LinearLayout.VERTICAL
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+                setPadding(0, 8, 0, 8)
+            }
+
+            // Time row
+            val timeRow = LinearLayout(this).apply {
                 orientation = LinearLayout.HORIZONTAL
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
@@ -246,18 +259,34 @@ class EditHabitActivity : AppCompatActivity() {
                 )
             }
 
+            // Time text — click to edit
             val timeText = TextView(this).apply {
                 text = formatTime(this@EditHabitActivity, reminder.hour, reminder.minute)
                 textSize = 16f
                 layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
-                setPadding(48, 24, 16, 24)
+                setPadding(48, 16, 16, 16)
                 setTextColor(currentThemeTextColor())
+                setOnClickListener {
+                    val is24HourMode = DateFormat.is24HourFormat(this@EditHabitActivity)
+                    val dialog = TimePickerDialog.newInstance(
+                        object : TimePickerDialog.OnTimeSetListener {
+                            override fun onTimeSet(view: RadialPickerLayout?, hourOfDay: Int, minute: Int) {
+                                reminders[index] = Reminder(hourOfDay, minute, reminders[index].days)
+                                populateReminders()
+                            }
+                            override fun onTimeCleared(view: RadialPickerLayout?) {}
+                        },
+                        reminder.hour, reminder.minute, is24HourMode, androidColor
+                    )
+                    dialog.dismissCurrentAndShow(supportFragmentManager, "timePicker_$index")
+                }
             }
 
+            // Delete button
             val deleteBtn = TextView(this).apply {
                 text = "✕"
                 textSize = 16f
-                setPadding(16, 24, 48, 24)
+                setPadding(16, 16, 48, 16)
                 setTextColor(currentThemeTextColor())
                 setOnClickListener {
                     reminders.removeAt(index)
@@ -265,9 +294,76 @@ class EditHabitActivity : AppCompatActivity() {
                 }
             }
 
-            row.addView(timeText)
-            row.addView(deleteBtn)
+            timeRow.addView(timeText)
+            timeRow.addView(deleteBtn)
+
+            // Days row — S M T W T F S toggle buttons
+            val daysRow = LinearLayout(this).apply {
+                orientation = LinearLayout.HORIZONTAL
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+                setPadding(48, 4, 48, 8)
+            }
+
+            val daysArray = reminder.days.toArray()
+
+            for (dayIndex in 0..6) {
+                val dayBtn = TextView(this).apply {
+                    text = dayNames[dayIndex]
+                    textSize = 12f
+                    gravity = Gravity.CENTER
+                    val size = (32 * resources.displayMetrics.density).toInt()
+                    val margin = (4 * resources.displayMetrics.density).toInt()
+                    layoutParams = LinearLayout.LayoutParams(size, size).apply {
+                        setMargins(margin, 0, margin, 0)
+                    }
+                    isSelected = daysArray[dayIndex]
+                    updateDayButton(this, daysArray[dayIndex])
+                    setOnClickListener {
+                        val newDays = reminders[index].days.toArray().clone()
+                        newDays[dayIndex] = !newDays[dayIndex]
+                        // At least one day must be selected
+                        if (newDays.any { it }) {
+                            reminders[index] = Reminder(
+                                reminders[index].hour,
+                                reminders[index].minute,
+                                WeekdayList(newDays)
+                            )
+                            populateReminders()
+                        }
+                    }
+                }
+                daysRow.addView(dayBtn)
+            }
+
+            row.addView(timeRow)
+            row.addView(daysRow)
             binding.remindersContainer.addView(row)
+
+            // Divider
+            if (index < reminders.size - 1) {
+                val divider = View(this).apply {
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT, 1
+                    ).apply { setMargins(48, 4, 48, 4) }
+                    setBackgroundColor(currentThemeDividerColor())
+                }
+                binding.remindersContainer.addView(divider)
+            }
+        }
+    }
+
+    private fun updateDayButton(btn: TextView, selected: Boolean) {
+        if (selected) {
+            btn.setBackgroundColor(androidColor)
+            btn.setTextColor(0xFFFFFFFF.toInt())
+            btn.setTypeface(null, Typeface.BOLD)
+        } else {
+            btn.setBackgroundColor(0x22888888.toInt())
+            btn.setTextColor(currentThemeTextColor())
+            btn.setTypeface(null, Typeface.NORMAL)
         }
     }
 
@@ -275,6 +371,14 @@ class EditHabitActivity : AppCompatActivity() {
         val attrs = intArrayOf(android.R.attr.textColorPrimary)
         val ta = obtainStyledAttributes(attrs)
         val color = ta.getColor(0, 0xFF000000.toInt())
+        ta.recycle()
+        return color
+    }
+
+    private fun currentThemeDividerColor(): Int {
+        val attrs = intArrayOf(android.R.attr.listDivider)
+        val ta = obtainStyledAttributes(attrs)
+        val color = ta.getColor(0, 0x22000000.toInt())
         ta.recycle()
         return color
     }
