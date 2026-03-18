@@ -233,7 +233,7 @@ class EditHabitActivity : AppCompatActivity() {
             },
             8, 0, is24HourMode, androidColor
         )
-        dialog.dismissCurrentAndShow(supportFragmentManager, "timePicker_new")
+        dialog.dismissCurrentAndShow(supportFragmentManager, "timePicker_${System.currentTimeMillis()}")
     }
 
     private fun populateReminders() {
