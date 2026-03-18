@@ -87,7 +87,7 @@ class EditHabitActivity : AppCompatActivity() {
 
     val reminders: MutableList<Reminder> = mutableListOf()
 
-    private val dayNames = listOf("S", "M", "T", "W", "T", "F", "S")
+    private val dayNames = listOf("Sa", "Su", "M", "T", "W", "Th", "F")
 
     override fun onCreate(state: Bundle?) {
         super.onCreate(state)
