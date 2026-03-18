@@ -57,7 +57,6 @@ import org.isoron.uhabits.core.models.WeekdayList
 import org.isoron.uhabits.databinding.ActivityEditHabitBinding
 import org.isoron.uhabits.utils.applyRootViewInsets
 import org.isoron.uhabits.utils.applyToolbarInsets
-import org.isoron.uhabits.utils.dismissCurrentAndShow
 import org.isoron.uhabits.utils.formatTime
 
 fun formatFrequency(freqNum: Int, freqDen: Int, resources: Resources) = when {
@@ -220,27 +219,40 @@ class EditHabitActivity : AppCompatActivity() {
         }
     }
 
-    private fun showTimePickerForNewReminder() {
+    private fun showTimePicker(
+        initialHour: Int,
+        initialMinute: Int,
+        tag: String,
+        onTimeSet: (Int, Int) -> Unit
+    ) {
         val is24HourMode = DateFormat.is24HourFormat(this)
         val dialog = TimePickerDialog.newInstance(
             object : TimePickerDialog.OnTimeSetListener {
                 override fun onTimeSet(view: RadialPickerLayout?, hourOfDay: Int, minute: Int) {
-                    val reminder = Reminder(hourOfDay, minute, WeekdayList.EVERY_DAY)
-                    reminders.add(reminder)
-                    populateReminders()
+                    onTimeSet(hourOfDay, minute)
                 }
                 override fun onTimeCleared(view: RadialPickerLayout?) {}
             },
-            8, 0, is24HourMode, androidColor
+            initialHour, initialMinute, is24HourMode, androidColor
         )
-        dialog.dismissCurrentAndShow(supportFragmentManager, "timePicker_${System.currentTimeMillis()}")
+        val ft = supportFragmentManager.beginTransaction()
+        val prev = supportFragmentManager.findFragmentByTag(tag)
+        if (prev != null) ft.remove(prev)
+        ft.addToBackStack(null)
+        dialog.show(ft, tag)
+    }
+
+    private fun showTimePickerForNewReminder() {
+        showTimePicker(8, 0, "timePicker_new_${reminders.size}") { hour, minute ->
+            reminders.add(Reminder(hour, minute, WeekdayList.EVERY_DAY))
+            populateReminders()
+        }
     }
 
     private fun populateReminders() {
         binding.remindersContainer.removeAllViews()
         reminders.forEachIndexed { index, reminder ->
 
-            // Main row
             val row = LinearLayout(this).apply {
                 orientation = LinearLayout.VERTICAL
                 layoutParams = LinearLayout.LayoutParams(
@@ -250,7 +262,6 @@ class EditHabitActivity : AppCompatActivity() {
                 setPadding(0, 8, 0, 8)
             }
 
-            // Time row
             val timeRow = LinearLayout(this).apply {
                 orientation = LinearLayout.HORIZONTAL
                 layoutParams = LinearLayout.LayoutParams(
@@ -259,7 +270,6 @@ class EditHabitActivity : AppCompatActivity() {
                 )
             }
 
-            // Time text — click to edit
             val timeText = TextView(this).apply {
                 text = formatTime(this@EditHabitActivity, reminder.hour, reminder.minute)
                 textSize = 16f
@@ -267,22 +277,13 @@ class EditHabitActivity : AppCompatActivity() {
                 setPadding(48, 16, 16, 16)
                 setTextColor(currentThemeTextColor())
                 setOnClickListener {
-                    val is24HourMode = DateFormat.is24HourFormat(this@EditHabitActivity)
-                    val dialog = TimePickerDialog.newInstance(
-                        object : TimePickerDialog.OnTimeSetListener {
-                            override fun onTimeSet(view: RadialPickerLayout?, hourOfDay: Int, minute: Int) {
-                                reminders[index] = Reminder(hourOfDay, minute, reminders[index].days)
-                                populateReminders()
-                            }
-                            override fun onTimeCleared(view: RadialPickerLayout?) {}
-                        },
-                        reminder.hour, reminder.minute, is24HourMode, androidColor
-                    )
-                    dialog.dismissCurrentAndShow(supportFragmentManager, "timePicker_$index")
+                    showTimePicker(reminder.hour, reminder.minute, "timePicker_edit_$index") { hour, minute ->
+                        reminders[index] = Reminder(hour, minute, reminders[index].days)
+                        populateReminders()
+                    }
                 }
             }
 
-            // Delete button
             val deleteBtn = TextView(this).apply {
                 text = "✕"
                 textSize = 16f
@@ -297,7 +298,6 @@ class EditHabitActivity : AppCompatActivity() {
             timeRow.addView(timeText)
             timeRow.addView(deleteBtn)
 
-            // Days row — S M T W T F S toggle buttons
             val daysRow = LinearLayout(this).apply {
                 orientation = LinearLayout.HORIZONTAL
                 layoutParams = LinearLayout.LayoutParams(
@@ -319,12 +319,10 @@ class EditHabitActivity : AppCompatActivity() {
                     layoutParams = LinearLayout.LayoutParams(size, size).apply {
                         setMargins(margin, 0, margin, 0)
                     }
-                    isSelected = daysArray[dayIndex]
-                    updateDayButton(this, !daysArray[dayIndex])
+                    updateDayButton(this, daysArray[dayIndex])
                     setOnClickListener {
                         val newDays = reminders[index].days.toArray().clone()
                         newDays[dayIndex] = !newDays[dayIndex]
-                        // At least one day must be selected
                         if (newDays.any { it }) {
                             reminders[index] = Reminder(
                                 reminders[index].hour,
@@ -342,7 +340,6 @@ class EditHabitActivity : AppCompatActivity() {
             row.addView(daysRow)
             binding.remindersContainer.addView(row)
 
-            // Divider
             if (index < reminders.size - 1) {
                 val divider = View(this).apply {
                     layoutParams = LinearLayout.LayoutParams(
