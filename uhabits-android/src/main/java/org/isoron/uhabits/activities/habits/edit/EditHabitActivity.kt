@@ -57,8 +57,8 @@ import org.isoron.uhabits.core.models.WeekdayList
 import org.isoron.uhabits.databinding.ActivityEditHabitBinding
 import org.isoron.uhabits.utils.applyRootViewInsets
 import org.isoron.uhabits.utils.applyToolbarInsets
-import org.isoron.uhabits.utils.formatTime
 import org.isoron.uhabits.utils.dismissCurrentAndShow
+import org.isoron.uhabits.utils.formatTime
 
 fun formatFrequency(freqNum: Int, freqDen: Int, resources: Resources) = when {
     freqNum == 1 && (freqDen == 30 || freqDen == 31) -> resources.getString(R.string.every_month)
@@ -216,7 +216,7 @@ class EditHabitActivity : AppCompatActivity() {
         }
 
         for (fragment in supportFragmentManager.fragments) {
-            (fragment as DialogFragment).dismiss()
+            if (fragment is DialogFragment) fragment.dismiss()
         }
     }
 
