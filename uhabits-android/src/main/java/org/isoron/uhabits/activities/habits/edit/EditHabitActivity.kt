@@ -236,11 +236,12 @@ class EditHabitActivity : AppCompatActivity() {
             },
             initialHour, initialMinute, is24HourMode, androidColor
         )
-        val ft = supportFragmentManager.beginTransaction()
-        val prev = supportFragmentManager.findFragmentByTag(tag)
-        if (prev != null) ft.remove(prev)
-        ft.addToBackStack(null)
-        dialog.show(ft, tag)
+        supportFragmentManager.executePendingTransactions()
+val prev = supportFragmentManager.findFragmentByTag(tag)
+if (prev != null) {
+    supportFragmentManager.beginTransaction().remove(prev).commitNow()
+}
+dialog.show(supportFragmentManager, tag)
     }
 
     private fun showTimePickerForNewReminder() {
