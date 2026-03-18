@@ -320,7 +320,7 @@ class EditHabitActivity : AppCompatActivity() {
                         setMargins(margin, 0, margin, 0)
                     }
                     isSelected = daysArray[dayIndex]
-                    updateDayButton(this, daysArray[dayIndex])
+                    updateDayButton(this, !daysArray[dayIndex])
                     setOnClickListener {
                         val newDays = reminders[index].days.toArray().clone()
                         newDays[dayIndex] = !newDays[dayIndex]
