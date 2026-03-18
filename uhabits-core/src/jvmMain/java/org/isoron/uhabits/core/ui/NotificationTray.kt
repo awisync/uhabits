@@ -25,10 +25,12 @@ import org.isoron.uhabits.core.commands.CreateRepetitionCommand
 import org.isoron.uhabits.core.commands.DeleteHabitsCommand
 import org.isoron.uhabits.core.models.Habit
 import org.isoron.uhabits.core.models.NumericalHabitType
+import org.isoron.uhabits.core.models.Reminder
 import org.isoron.uhabits.core.models.Timestamp
 import org.isoron.uhabits.core.preferences.Preferences
 import org.isoron.uhabits.core.tasks.Task
 import org.isoron.uhabits.core.tasks.TaskRunner
+import java.util.Calendar
 import java.util.HashMap
 import java.util.Locale
 import javax.inject.Inject
@@ -155,9 +157,18 @@ class NotificationTray @Inject constructor(
             )
         }
 
+        private fun findReminderForTime(reminderTime: Long): Reminder? {
+            val cal = Calendar.getInstance()
+            cal.timeInMillis = reminderTime
+            val hour = cal.get(Calendar.HOUR_OF_DAY)
+            val minute = cal.get(Calendar.MINUTE)
+            return habit.reminders.find { it.hour == hour && it.minute == minute }
+                ?: habit.reminders.firstOrNull()
+        }
+
         private fun shouldShowReminderToday(): Boolean {
             if (!habit.hasReminder()) return false
-            val reminder = habit.reminders.firstOrNull() ?: return false
+            val reminder = findReminderForTime(reminderTime) ?: return false
             val reminderDays = reminder.days.toArray()
             val weekday = timestamp.weekday
             return reminderDays[weekday]
