@@ -375,12 +375,8 @@ dialog.show(supportFragmentManager, tag)
     }
 
     private fun currentThemeDividerColor(): Int {
-        val attrs = intArrayOf(android.R.attr.listDivider)
-        val ta = obtainStyledAttributes(attrs)
-        val color = ta.getColor(0, 0x22000000.toInt())
-        ta.recycle()
-        return color
-    }
+    return 0x22888888.toInt()
+}
 
     private fun save() {
         val component = (application as HabitsApplication).component
