@@ -47,10 +47,17 @@ class OverviewCardPresenter {
             val scoreToday = scores[today].value.toFloat()
             val scoreLastMonth = scores[lastMonth].value.toFloat()
             val scoreLastYear = scores[lastYear].value.toFloat()
-            val totalCount = habit.originalEntries.getKnown()
-                .filter { it.value == Entry.YES_MANUAL }
-                .count()
-                .toLong()
+            val totalCount = if (habit.isNumerical) {
+                habit.originalEntries.getKnown()
+                    .filter { it.value > 0 }
+                    .count()
+                    .toLong()
+            } else {
+                habit.originalEntries.getKnown()
+                    .filter { it.value == Entry.YES_MANUAL }
+                    .count()
+                    .toLong()
+            }
 
             val dayPercentage = if (habit.isNumerical) {
                 val target = habit.targetValue
