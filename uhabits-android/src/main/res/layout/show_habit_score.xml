@@ -42,6 +42,16 @@
             android:layout_alignParentTop="true"
             android:text="@string/score"/>
 
+        <TextView
+            android:id="@+id/scoreValue"
+            style="@style/CardHeader"
+            android:layout_toEndOf="@id/title"
+            android:layout_toRightOf="@id/title"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="6dp"
+            android:layout_marginLeft="6dp"
+            android:text=""/>
+
         <org.isoron.uhabits.activities.common.views.ScoreChart
             android:id="@+id/scoreView"
             android:layout_width="match_parent"
