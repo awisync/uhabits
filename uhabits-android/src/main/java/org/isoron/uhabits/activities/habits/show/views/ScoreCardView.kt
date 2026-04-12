@@ -35,6 +35,8 @@ class ScoreCardView(context: Context, attrs: AttributeSet) : LinearLayout(contex
     fun setState(state: ScoreCardState) {
         val androidColor = state.theme.color(state.color).toInt()
         binding.title.setTextColor(androidColor)
+        binding.scoreValue.setTextColor(androidColor)
+        binding.scoreValue.text = String.format("%.0f%%", state.currentScore * 100)
         binding.spinner.setSelection(state.spinnerPosition)
         binding.scoreView.setScores(state.scores)
         binding.scoreView.reset()
