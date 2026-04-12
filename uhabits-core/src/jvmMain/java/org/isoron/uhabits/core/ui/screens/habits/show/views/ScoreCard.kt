@@ -31,7 +31,8 @@ data class ScoreCardState(
     val bucketSize: Int,
     val spinnerPosition: Int,
     val color: PaletteColor,
-    val theme: Theme
+    val theme: Theme,
+    val currentScore: Float = 0f,
 )
 
 class ScoreCardPresenter(
@@ -80,7 +81,8 @@ class ScoreCardPresenter(
                 scores = scores,
                 bucketSize = bucketSize,
                 spinnerPosition = spinnerPosition,
-                theme = theme
+                theme = theme,
+                currentScore = scores.firstOrNull()?.value?.toFloat() ?: 0f,
             )
         }
     }
